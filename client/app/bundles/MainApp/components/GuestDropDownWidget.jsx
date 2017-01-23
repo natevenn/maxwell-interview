@@ -7,7 +7,7 @@ export default class GuestDropDown extends React.Component {
     this.handleChange = this.handleChange.bind(this)
   }
 
-  renderOptions(num) {
+  renderSelectOptions(num) {
     let items = []
     for(let i=1; i <= num; i++) {
     let guests = i > 1 ? "guests" : "guest"
@@ -29,7 +29,7 @@ export default class GuestDropDown extends React.Component {
             className="guests"
             onChange={this.handleChange}
             ref={(guests) => this.guests = guests}>
-            {this.renderOptions(16)}
+            {this.renderSelectOptions(16)}
           </select>
         </span>
       </div>
