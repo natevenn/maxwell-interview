@@ -1,5 +1,6 @@
 class Person < ApplicationRecord
   scope :admin, -> { Person.where(admin: true) }
+  after_save :send_email_notifications
 
   def validate_user
     self.validated = true
@@ -35,5 +36,9 @@ class Person < ApplicationRecord
 
   def set_handle(name, count)
     self.handle = name + count.to_s
+  end
+
+  def send_email_notifications
+    Email.handle_mail_for_new_user(self)
   end
 end

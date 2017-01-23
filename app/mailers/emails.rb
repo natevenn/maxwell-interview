@@ -1,7 +1,5 @@
 class Emails < ActionMailer::Base
 
-  #check if instance variables are necessary
-  #
   def handle_mail_for_new_user(person)
     email_user(person).deliever
     new_user_notification(person).deliever
@@ -13,14 +11,18 @@ class Emails < ActionMailer::Base
   end
 
   def new_user_notification(user)
-    admins = Person.admin.pluck(:email) rescue []
+    @admins = get_admin_emails
     @user = user
-    mail to: admins, from: 'foo@example.com'
+    mail to: @admins, from: 'foo@example.com'
   end
 
-  def admin_removing_unvalidated_users(admins, users)
-    @admins = admins.collect {|a| a.email } rescue []
+  def admin_removing_unvalidated_users(users)
+    @admins = get_admin_emails
     @users = users
-    mail to: admins, from: 'foo@example.com'
+    mail to: @admins, from: 'foo@example.com'
+  end
+
+  def get_admin_emails
+    Person.admin.pluck(:email) rescue []
   end
 end

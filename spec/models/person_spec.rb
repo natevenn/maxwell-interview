@@ -12,6 +12,7 @@ describe Person, type: :model do
 
         allow_any_instance_of(Person).to receive(:rand).with(10000).and_return(random_number)
         allow(Time).to receive(:now).and_return(current_time)
+
         person.create_slug
         expect(person.slug).to eq result
       end
