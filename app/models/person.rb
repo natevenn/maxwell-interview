@@ -13,11 +13,7 @@ class Person < ApplicationRecord
     create_slug
     set_admin_to_false
     person_count = Person.count + 1
-    if (person_count).odd?
-      team_name = "UnicornRainbows"
-    else
-      team_name = "LaserScorpions"
-    end
+    team_name = if(person_count).odd? ? "UnicornRainbows" : "LaserScorpions"
     set_team(team_name)
     set_handle(team_name, person_count)
   end
