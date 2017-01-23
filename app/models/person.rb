@@ -1,4 +1,12 @@
 class Person < ApplicationRecord
+  scope :admin, -> { Person.where(admin: true) }
+
+  def validate_user
+    self.validated = true
+    self.save
+    Rails.logger.info "USER: User ##{self.id} validated email successfully."
+    Emails.handle_mail_for_new_user(self)
+  end
 
   def set_initial_attributes
     create_slug

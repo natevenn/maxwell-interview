@@ -1,5 +1,5 @@
 describe Emails, type: :mailer do
-  describe 'welcome' do
+  describe 'handle_mail_for_new_user' do
   end
 
   describe 'validate_email' do

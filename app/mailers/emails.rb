@@ -1,25 +1,21 @@
 class Emails < ActionMailer::Base
 
+  #check if instance variables are necessary
+  #
+  def handle_mail_for_new_user(person)
+    email_user(person).deliever
+    new_user_notification(person).deliever
+  end
+
   def welcome(person)
     @person = person
     mail to: @person, from: 'foo@example.com'
   end
 
-  def validate_email(person)
-    @person = person
-    mail to: @person, from: 'foo@example.com'
-  end
-
-  def admin_user_validated(admins, user)
-    @admins = admins.collect {|a| a.email } rescue []
+  def new_user_notification(user)
+    admins = Person.admin.pluck(:email) rescue []
     @user = user
-    mail to: @admins, from: 'foo@example.com'
-  end
-
-  def admin_new_user(admins, user)
-    @admins = admins.collect {|a| a.email } rescue []
-    @user = user
-    mail to: @admins, from: 'foo@example.com'
+    mail to: admins, from: 'foo@example.com'
   end
 
   def admin_removing_unvalidated_users(admins, users)
@@ -27,5 +23,4 @@ class Emails < ActionMailer::Base
     @users = users
     mail to: admins, from: 'foo@example.com'
   end
-
 end
