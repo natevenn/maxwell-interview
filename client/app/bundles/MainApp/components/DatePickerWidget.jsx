@@ -2,13 +2,14 @@ import React, { PropTypes } from 'react';
 import Calander from 'react-datepicker';
 import moment from 'moment';
 
+//const date = moment().sub
 export default class DatePicker extends React.Component {
   constructor() {
     super()
 
     this.state = {
-      checkin: moment(),
-      checkout: moment().add(1, 'day')
+      checkin: "",
+      checkout: ""
     }
 
     this.handleCheckout = this.handleCheckout.bind(this);
@@ -16,16 +17,13 @@ export default class DatePicker extends React.Component {
   }
 
   handleCheckin(date) {
-    this.setState({
-      checkin: date,
-      endDate: moment(date).add(1, 'day')
-    })
-    this.props.updateState('checkin', this.formatDate(this.state.checkin))
+    this.setState({ checkin: date })
+    this.props.updateState('checkin', this.formatDate(date))
   }
 
   handleCheckout(date) {
     this.setState({ checkout: date })
-    this.props.updateState('checkout', this.formatDate(this.state.checkout))
+    this.props.updateState('checkout', this.formatDate(date))
   }
 
   formatDate(date) {
@@ -37,16 +35,18 @@ export default class DatePicker extends React.Component {
   render() {
     return (
     <div className='search-bar-div'>
-      <span className='search-bar-elements'>
-        <label className="when-label">Check in</label>
+      <span className='search-bar-elements checkin-calander'>
+        <label className="when-label">When</label>
         <Calander
+          placeholderText="checkin"
           selected={this.state.checkin}
           onChange={this.handleCheckin}
         />
       </span>
-      <span className='search-bar-elements'>
-        <label className="when-label">Check out</label>
+      ->
+      <span className='search-bar-elements checkout-calander'>
         <Calander
+          placeholderText="checkout"
           selected={this.state.checkout}
           onChange={this.handleCheckout}
         />

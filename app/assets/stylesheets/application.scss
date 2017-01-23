@@ -52,6 +52,15 @@ input {
   color: lightgrey !important;
 }
 
+.calander-pointer {
+  position: relative;
+  z-index: 1;
+}
+
+.checkin-calander {
+  margin-right: 0 !important;
+}
+
 .search-button {
   border-color: #ff7e82;
   background-color: #ff7e82;

@@ -14,11 +14,41 @@ export default class MainWidget extends React.Component {
       guests: '1',
       checkin: '',
       checkout: '',
-      errorMessages: []
+      errorMessages: [],
+      listinging: []
     }
 
     this.updateState = this.updateState.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
     this.validateInputs = this.validateInputs.bind(this);
+    this.renderListings = this.renderListings.bind(this);
+    this.serachListings = this.searchListings.bind(this);
+  }
+
+  componentWillMount() {
+    window.parent.parseSearch = function(response) {
+      let data = response.body
+      this.renderListings(data)
+    }
+  }
+
+  searchListings() {
+    let locationUriEncoded = this.encodeUri(this.state.location)
+    const script = document.createElement("script");
+    script.type = "application/javascript";
+    script.src = `https://api.airbnb.com/v1/listings/search?key=bcxkf89pxe8srriv8h3rj7w9t&location=${locationUriEncoded}&guests=${this.state.guests}&callback=parseSearch`;
+    document.body.appendChild(script);
+  }
+
+  renderListings() {
+
+  }
+
+  encodeUri(value) {
+    var replaceWhiteSpace = value.replace(/ /g, '%20');
+    var replaceComma = replaceWhiteSpace.replace(/,/g, '%2C');
+    var encodedLocation = replaceComma.concat("%2C%20US")
+    return encodedLocation
   }
 
   updateState(key, value) {
@@ -27,16 +57,19 @@ export default class MainWidget extends React.Component {
 
   handleSearch(e) {
     e.preventDefault();
-    this.validateInputs();
+    if(this.validateInputs()) {
+      this.searchListings()
+    }
   }
 
   validateInputs() {
     let errorMessage = []
-    if(this.state.location === '') {errorMessage.push("Please choose a location")}
-    if(this.state.checkin === '') { errorMessage.push("Please choose a checkin date")}
-    if(this.state.checkout === '') { errorMessage.push("Please choose a checkout date")}
+    let message = "Please choose a "
+    if(this.state.location === '') {errorMessage.push(message + "location")}
+    if(this.state.checkin === '') { errorMessage.push(message + "checkin date")}
+    if(this.state.checkout === '') { errorMessage.push(message + "checkout date")}
     this.setState({errorMessages: errorMessage})
-    //else this.props.handleSearch(location, guests)
+    return errorMessage.length === 0
   }
 
   render() {
